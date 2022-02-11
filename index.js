@@ -19,34 +19,6 @@ pm2.connect((err) => {
     });
 });
 
-/**
- * Broadcast strategies
- */
-const Strategies = {
-    /**
-     *
-     * @param {Packet} packet
-     */
-    broadcast : function(packet) {
-        async.forEachLimit(process_list[packet.process.name], 3, function(proc, next) {
-            sendDataToProcessId(proc.pm_id, packet);
-        }, function(err) {
-            if (err) console.error(err);
-        });
-    },
-    /**
-     *
-     * @param {Packet} packet
-     */
-    roundRobin : function(packet) {
-        async.forEachLimit(process_list[packet.process.name], 3, function(proc, next) {
-            sendDataToProcessId(proc.pm_id, packet);
-        }, function(err) {
-            if (err) console.error(err);
-        });
-    }
-};
-
 function intercom(bus) {
     bus.on('process:msg',
         /**
@@ -54,16 +26,11 @@ function intercom(bus) {
          * @param {Packet} packet
          */
         function(packet) {
-            switch (packet.raw.strategy) {
-                case 'broadcast':
-                    Strategies.broadcast(packet);
-                    break;
-                case 'roundRobin':
-                    Strategies.roundRobin(packet);
-                    break;
-                default:
-                    Strategies.broadcast(packet);
-            }
+            async.forEachLimit(process_list[packet.process.name], 3, function(proc, next) {
+                sendDataToProcessId(proc.pm_id, packet);
+            }, function(err) {
+                if (err) console.error(err);
+            });
         });
 }
 
