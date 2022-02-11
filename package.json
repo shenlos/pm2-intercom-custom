@@ -1,0 +1,27 @@
+{
+  "name": "pm2-intercom-custom",
+  "version": "5.0.0",
+  "description": "pm2-intercom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startup": "pm2 start index.js --name=pm2-intercom-custom"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shenlos/pm2-intercom-custom.git"
+  },
+  "keywords": [
+    "pm2-intercom"
+  ],
+  "author": "mattf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shenlos/pm2-intercom-custom/issues"
+  },
+  "homepage": "https://github.com/shenlos/pm2-intercom-custom#readme",
+  "dependencies": {
+    "async": "^3.2.3",
+    "pm2": "^5.1.2"
+  }
+}
