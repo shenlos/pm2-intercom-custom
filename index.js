@@ -60,7 +60,7 @@ function getProcessList() {
                  *      exec_mode: "cluster",
                  *      instance_var: 'NODE_APP_INSTANCE_B',
                  *      env: {
-                 *          "instance_var": 'NODE_APP_INSTANCE_B', // 这里需要加上,防止pm2 reload xxx 导致 instance_var 值丢失。
+                 *          "instance_var": 'NODE_APP_INSTANCE_B', // 如果自定义instance_var，这里需要加上防止pm2 reload xxx 导致instance_var值和实际不一致。
                  *      }
                  *  }
                  */
@@ -72,13 +72,23 @@ function getProcessList() {
                     proc.pm2_env[proc.pm2_env.instance_var] === 0) {
                     temp_list[proc.name].push({
                         name : proc.name,
-                        pm_id : proc.pm_id
+                        pm_id : proc.pm_id,
+                        // instance_var: proc.pm2_env.instance_var,
+                        // instance_var_value: proc.pm2_env[proc.pm2_env.instance_var]
                     })
+                } else if (proc.pm2_env[proc.pm2_env.instance_var] === undefined) {
+                    // 兼容自定义instance_var值
+                    temp_list[proc.name].push({
+                        name : proc.name,
+                        pm_id : proc.pm_id,
+                        // instance_var: proc.pm2_env.instance_var,
+                        // instance_var_value: proc.pm2_env[proc.pm2_env.instance_var]
+                    });
                 }
             }
             process_list = temp_list;
             temp_list = null;
-            // console.log(process_list)
+            console.log(process_list)
         });
     }
 
