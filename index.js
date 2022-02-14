@@ -88,7 +88,7 @@ function getProcessList() {
             }
             process_list = temp_list;
             temp_list = null;
-            console.log(process_list)
+            // console.log(process_list)
         });
     }
 
